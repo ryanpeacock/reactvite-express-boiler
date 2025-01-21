@@ -1,0 +1,29 @@
+{
+  "name": "viteexpressboiler",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "serverbuild": "npx tsc",
+    "clientbuild": "npm run build --prefix ./client",
+    "server": "nodemon src/server.ts",
+    "client": "npm run dev --prefix ./client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "node dist/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "concurrently": "^9.1.2",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  }
+}
