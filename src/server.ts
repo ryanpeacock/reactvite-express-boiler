@@ -9,19 +9,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "public")));
-
-  app.get("*", (req: Request, res: Response) => {
-    res.sendFile(path.join(__dirname, "public", "index.html"));
-  });
-} else {
-  app.get("/", (req, res) => {
-    res.json({
-      message: "Development mode: Build the client to serve static files.",
-    });
-  });
-}
+const clientDistPath = path.resolve(__dirname, "../client/dist");
 
 app.get("/api/search-movies", async (req: Request, res: Response) => {
   const { search } = req.query;
@@ -63,6 +51,20 @@ app.get("/api/search-movies", async (req: Request, res: Response) => {
     res.status(500).json({ error: "An error occurred while fetching data" });
   }
 });
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(clientDistPath));
+
+  app.get("*", (req: Request, res: Response) => {
+    res.sendFile(path.join(clientDistPath, "index.html"));
+  });
+} else {
+  app.get("/", (req, res) => {
+    res.json({
+      message: "Development mode: Build the client to serve static files.",
+    });
+  });
+}
 
 app.listen(PORT, () => {
   console.log(

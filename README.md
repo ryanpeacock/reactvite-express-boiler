@@ -34,24 +34,20 @@ Ensure you have the following installed:
 
 2. Install dependencies:
    ```bash
-   # With npm
    npm install
-
-   # Or with yarn
-   yarn install
    ```
 
-3. Obtain an API key for the **OMDb API**:
-   - Visit the [OMDb API website](https://www.omdbapi.com/apikey.aspx) to register for a free or paid API key.
-
-4. Create a `.env` file in the root directory by copying `.env.copy`:
-   ```bash
-   cp .env.copy .env
-   ```
-   Add your OMDb API key to the `.env` file:
-   ```plaintext
-   OMDB_API_KEY=your_api_key_here
-   ```
+3. Set up your `.env` file:
+   - Create a `.env` file in the root directory by copying `.env.copy`:
+     ```bash
+     cp .env.copy .env
+     ```
+   - Set the following variables in the `.env` file:
+     ```plaintext
+     NODE_ENV=local
+     OMDB_API_KEY=your_api_key_here
+     ```
+   - Use `NODE_ENV=local` or `NODE_ENV=development` for local development and `NODE_ENV=production` to serve production-ready files.
 
 ### Running the Application
 
@@ -62,24 +58,22 @@ Run both the frontend and backend in development mode:
 npm run dev
 ```
 This starts:
-- The Vite dev server for the React SPA
-- The Express backend server
+- The Vite development server for the React SPA.
+- The Express backend server.
 
 Access the app at `http://localhost:5173` by default.
 
 #### Production Mode
 
-Build the React SPA and serve it with the Express server:
+Build the application and serve the production files:
+```bash
+npm run servebuildclient
+```
 
-1. Build the frontend:
-   ```bash
-   npm run build
-   ```
-
-2. Start the backend:
-   ```bash
-   npm start
-   ```
+This command:
+1. Compiles the server TypeScript code.
+2. Builds the React client.
+3. Starts the server to serve production files.
 
 ---
 
@@ -88,13 +82,15 @@ Build the React SPA and serve it with the Express server:
 ```plaintext
 reactvite-express-boiler/
 ├── client/                 # Frontend (React + Vite)
-│   ├── src/
+│   ├── dist/               # Production build output
 │   ├── public/
-│   └── vite.config.js
+│   ├── src/
+│   └── vite.config.ts
 ├── src/                    # Backend (Express.js)
-│   ├── routes/             # API routes
 │   ├── middlewares/        # Custom middleware
-│   ├── server.js           # Main server entry point
+│   ├── types/              # TypeScript definitions
+│   └── server.ts           # Main server entry point
+├── dist/                   # Compiled backend files
 ├── .env                    # Environment variables
 ├── .env.copy               # Example environment variables file
 ├── package.json            # Project dependencies and scripts
@@ -103,37 +99,17 @@ reactvite-express-boiler/
 
 ---
 
-## API Proxy Configuration
+## Scripts
 
-The Express server can act as a BFF proxy in multiple ways. Below are two example configurations:
-
-### 1. Proxying to a Third-Party API (OMDb API)
-
-This example demonstrates how to handle requests to the OMDb API through the Express server. It uses the API key from your `.env` file:
-
-```javascript
-app.get('/api/movies', async (req, res) => {
-  const { title } = req.query;
-  const response = await fetch(`https://www.omdbapi.com/?t=${title}&apikey=${process.env.OMDB_API_KEY}`);
-  const data = await response.json();
-  res.json(data);
-});
-```
-
-### 2. General Proxying Logic
-
-This example shows how to create a reusable proxy route for multiple third-party APIs. The base URL and headers can be customized dynamically:
-
-```javascript
-app.get('/api/proxy', async (req, res) => {
-  const { endpoint } = req.query; // e.g., `/data`
-  const response = await fetch(`https://third-party-api.com${endpoint}`, {
-    headers: { Authorization: `Bearer ${process.env.API_KEY}` },
-  });
-  const data = await response.json();
-  res.json(data);
-});
-```
+| Script                 | Description                                                           |
+|------------------------|-----------------------------------------------------------------------|
+| `npm run serverbuild`  | Compiles the server TypeScript code into JavaScript.                 |
+| `npm run clientbuild`  | Builds the React application into the `client/dist` folder.         |
+| `npm run server`       | Starts the Express server in development mode with Nodemon.         |
+| `npm run client`       | Starts the Vite development server for the React app.               |
+| `npm run dev`          | Runs both the backend and frontend in development mode concurrently.|
+| `npm run start`        | Starts the compiled Express server to serve production files.       |
+| `npm run servebuildclient` | Builds both the backend and frontend, then starts the server.   |
 
 ---
 
@@ -145,21 +121,17 @@ This boilerplate includes an example test component demonstrating the usage of *
 2. Use dropdown selections (powered by **React Select**) to filter or refine searches.
 3. Fetch movie data from the OMDb API using the query builder.
 
+### Screenshot
+
+Here is an example of the sample component in action:
+
+![Sample Component Screenshot](./assets/screenshotsample.png)
+
 ### Using the Sample Component
 
 1. Ensure you have set up your `.env` file with a valid `OMDB_API_KEY` as described above.
 2. Navigate to the test component route in your application (check the codebase for the specific path).
 3. Use the query builder and dropdowns to search for movies and view the results fetched from the OMDb API.
-
----
-
-## Scripts
-
-| Script              | Description                           |
-|---------------------|---------------------------------------|
-| `npm run dev`       | Run the app in development mode       |
-| `npm run build`     | Build the React app for production    |
-| `npm start`         | Start the Express server in production|
 
 ---
 
