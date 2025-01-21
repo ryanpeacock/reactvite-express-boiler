@@ -11,7 +11,6 @@ export default defineConfig({
       "/api": {
         target: "http://localhost:5000", // Your backend URL
         changeOrigin: true, // Needed for some CORS issues
-        rewrite: (path) => path.replace(/^\/api/, ""), // Optional: Remove /api prefix
       },
     },
   },

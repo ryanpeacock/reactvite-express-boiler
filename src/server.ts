@@ -23,7 +23,7 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-app.get("/search-movies", async (req: Request, res: Response) => {
+app.get("/api/search-movies", async (req: Request, res: Response) => {
   const { search } = req.query;
 
   // Ensure the query parameter is provided
