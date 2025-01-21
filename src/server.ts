@@ -7,7 +7,7 @@ import axios from "axios";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "public")));
@@ -50,7 +50,14 @@ app.get("/search-movies", async (req: Request, res: Response) => {
     }
 
     // Send back the results
-    res.json(response.data.Search);
+    res.json(
+      response.data.Search?.map((item) => {
+        return {
+          label: item.Title,
+          value: item.imdbID,
+        };
+      })
+    );
   } catch (error) {
     console.error("Error fetching data from OMDb API:", error);
     res.status(500).json({ error: "An error occurred while fetching data" });

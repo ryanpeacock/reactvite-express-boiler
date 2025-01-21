@@ -8,7 +8,11 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      "/api": "http://localhost:5000", // Redirect API calls to backend
+      "/api": {
+        target: "http://localhost:5000", // Your backend URL
+        changeOrigin: true, // Needed for some CORS issues
+        rewrite: (path) => path.replace(/^\/api/, ""), // Optional: Remove /api prefix
+      },
     },
   },
 });
