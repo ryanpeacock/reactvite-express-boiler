@@ -12,6 +12,7 @@ A boilerplate project for building a React Single Page Application (SPA) using [
 - 🎥 Integration with the **OMDb API** to fetch movie data as a sample third-party API.
 - 📂 Well-structured codebase for easy scalability and maintenance.
 - 🛠️ Ready for deployment with minimal configuration.
+- 🐳 **Dockerized** for consistent environments and easy deployment.
 
 ---
 
@@ -23,16 +24,19 @@ Ensure you have the following installed:
 
 - [Node.js](https://nodejs.org/) (version 16+ recommended)
 - [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
+- [Docker](https://www.docker.com/)
 
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/ryanpeacock/reactvite-express-boiler.git
    cd reactvite-express-boiler
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
@@ -54,10 +58,13 @@ Ensure you have the following installed:
 #### Development Mode
 
 Run both the frontend and backend in development mode:
+
 ```bash
 npm run dev
 ```
+
 This starts:
+
 - The Vite development server for the React SPA.
 - The Express backend server.
 
@@ -66,14 +73,53 @@ Access the app at `http://localhost:5173` by default.
 #### Production Mode
 
 Build the application and serve the production files:
+
 ```bash
 npm run servebuildclient
 ```
 
 This command:
+
 1. Compiles the server TypeScript code.
 2. Builds the React client.
 3. Starts the server to serve production files.
+
+---
+
+### Using Docker
+
+#### Build and Run in Development Mode
+
+To run the application in development mode using Docker:
+
+1. Build the development image:
+
+   ```bash
+   docker build -t reactvite-express-dev --target development .
+   ```
+
+2. Run the container:
+   ```bash
+   docker run -p 5000:5000 -p 5173:5173 --env-file .env -v $(pwd):/app reactvite-express-dev
+   ```
+   This maps the development ports and mounts your project files for live updates.
+
+#### Build and Run in Production Mode
+
+To run the application in production mode using Docker:
+
+1. Build the production image:
+
+   ```bash
+   docker build -t reactvite-express-prod --target production .
+   ```
+
+2. Run the container:
+   ```bash
+   docker run -p 5000:5000 --env-file .env reactvite-express-prod
+   ```
+
+Access the app at `http://localhost:5000` by default.
 
 ---
 
@@ -93,6 +139,7 @@ reactvite-express-boiler/
 ├── dist/                   # Compiled backend files
 ├── .env                    # Environment variables
 ├── .env.copy               # Example environment variables file
+├── Dockerfile              # Docker configuration
 ├── package.json            # Project dependencies and scripts
 └── README.md               # Project documentation
 ```
@@ -101,15 +148,15 @@ reactvite-express-boiler/
 
 ## Scripts
 
-| Script                 | Description                                                           |
-|------------------------|-----------------------------------------------------------------------|
-| `npm run serverbuild`  | Compiles the server TypeScript code into JavaScript.                 |
-| `npm run clientbuild`  | Builds the React application into the `client/dist` folder.         |
-| `npm run server`       | Starts the Express server in development mode with Nodemon.         |
-| `npm run client`       | Starts the Vite development server for the React app.               |
-| `npm run dev`          | Runs both the backend and frontend in development mode concurrently.|
-| `npm run start`        | Starts the compiled Express server to serve production files.       |
-| `npm run servebuildclient` | Builds both the backend and frontend, then starts the server.   |
+| Script                     | Description                                                          |
+| -------------------------- | -------------------------------------------------------------------- |
+| `npm run serverbuild`      | Compiles the server TypeScript code into JavaScript.                 |
+| `npm run clientbuild`      | Builds the React application into the `client/dist` folder.          |
+| `npm run server`           | Starts the Express server in development mode with Nodemon.          |
+| `npm run client`           | Starts the Vite development server for the React app.                |
+| `npm run dev`              | Runs both the backend and frontend in development mode concurrently. |
+| `npm run start`            | Starts the compiled Express server to serve production files.        |
+| `npm run servebuildclient` | Builds both the backend and frontend, then starts the server.        |
 
 ---
 
