@@ -100,7 +100,7 @@ To run the application in development mode using Docker:
 
 2. Run the container:
    ```bash
-   docker run -p 5000:5000 -p 5173:5173 --env-file .env -v $(pwd):/app reactvite-express-dev
+   docker run -p 5000:5000 -p 5173:5173 reactvite-express-dev
    ```
    This maps the development ports and mounts your project files for live updates.
 
